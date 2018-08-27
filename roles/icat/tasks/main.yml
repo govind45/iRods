@@ -1,22 +1,41 @@
 ---
 
 - name: add public key
-  command: wget -qO - https://packages.irods.org/irods-signing-key.asc | sudo apt-key add -
+  apt_key:
+    url: https://packages.irods.org/irods-signing-key.asc
+    state: present
 
-- name: add custom irods repo to apt
-  command: echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/renci-irods.list
+- name: Install dependent python packages
+  apt: name={{item}}
+  with_items:
+     - python-apt
+     - python3-apt
+
+#add custom irods repo to apt
+- apt_repository:
+    repo: deb [arch=amd64] https://packages.irods.org/apt/ xenial main
+    state: present
+
+#- name: add custom irods repo to apt
+#  command: echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/renci-irods.list
+#  sudo: yes
 
 - name: ensure apt cache is up to date
   apt: update_cache=yes
+  sudo: yes
 
-- name: set up postgrSQL
-  command: sudo su - postgres
+#- name: set up postgrSQL
+#  command: sudo su - postgres
 
 - name: Create PostgrSQL Database
   postgresql_db: name={{dbname}}
+  become: yes
+  become_user: postgres
 
 - name: grant access to user
   postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+  become: yes
+  become_user: postgres
 
 - name: Install iCat server and Postgres plugin
   apt: name={{item}}
