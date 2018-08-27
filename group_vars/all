@@ -1,0 +1,31 @@
+# postgreSQL vars
+dbname: ICAT
+dbuser: irods
+dbpassword: Pass@1234
+dbport: 5432
+saltpw: 12
+# icat configuration
+irods_admin: rods
+irods_passwd: Pass@1234
+icatzone: newZone
+
+# common resource configurations
+account_user: userX
+account_group: userX
+icat_port: 1247
+port_range_begin: 20000
+port_range_end: 20199
+vault_directory: /var/lib/irods/Vault
+zone_key: N416XIciYSZ9n2_kx8CaSw0fNJPj576P
+negotiation_key: PXgWDgjd_5SS848zyfbtoqDUDCCyf79i
+control_plane_key: 1wui5bTgMU1W9_zAi9XTpLPR5JRmEP6Q 
+control_plane_port: 1248
+schema_uri: https://schemas.irods.org/configuration
+
+
+
+# init icat
+#dns: master
+
+
+

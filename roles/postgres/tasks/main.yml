@@ -1,0 +1,11 @@
+---
+
+
+- name: ensure apt cache is up to date
+  apt: update_cache=yes
+
+- name: Install PostgrSQL and required packages
+  apt: name={{item}}
+  with_items:
+     - postgresql
+     - postgresql-contrib

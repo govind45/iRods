@@ -1,0 +1,39 @@
+---
+
+- name: add public key
+  command: wget -qO - https://packages.irods.org/irods-signing-key.asc | sudo apt-key add -
+
+- name: add custom irods repo to apt
+  command: echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/renci-irods.list
+
+- name: ensure apt cache is up to date
+  apt: update_cache=yes
+
+- name: set up postgrSQL
+  command: sudo su - postgres
+
+- name: Create PostgrSQL Database
+  postgresql_db: name={{dbname}}
+
+- name: grant access to user
+  postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+
+- name: Install iCat server and Postgres plugin
+  apt: name={{item}}
+  with_items:
+     - irods-server
+     - irods-database-plugin-postgres
+
+- name: response bootstrapping
+  template: src=genresponse.j2 dest=/home/{{ ansible_ssh_user }}/genresponse.sh
+
+- name: generate setup responses
+  shell: 
+     mkdir -p /opt/irods;
+     mv /home/{{ ansible_ssh_user }}/genresponse.sh /opt/irods/genresponse.sh;
+     chmod +x /opt/irods/genresponse.sh;
+     /opt/irods/genresponse.sh /opt/irods/setup_responses
+
+- name: config iCAT server
+  sudo: yes
+  script: /var/lib/irods/scripts/setup_irods.py < /opt/irods/setup_responses

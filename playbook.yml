@@ -1,0 +1,16 @@
+# Install PostgreSQL
+- hosts: servers
+  sudo: yes
+  vars:
+    cloud: true
+  roles:
+   - role: postgres
+
+# Install iCAT
+
+- hosts: servers
+  sudo: yes
+  vars:
+    cloud: true
+  roles:
+   - role: icat
