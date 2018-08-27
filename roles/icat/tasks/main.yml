@@ -10,7 +10,6 @@
   with_items:
      - python-apt
      - python3-apt
-
 #add custom irods repo to apt
 - apt_repository:
     repo: deb [arch=amd64] https://packages.irods.org/apt/ xenial main
@@ -54,5 +53,6 @@
      /opt/irods/genresponse.sh /opt/irods/setup_responses
 
 - name: config iCAT server
-  sudo: yes
-  script: /var/lib/irods/scripts/setup_irods.py < /opt/irods/setup_responses
+  shell: python /var/lib/irods/scripts/setup_irods.py < /opt/irods/setup_responses
+  become: yes
+  #script: /var/lib/irods/scripts/setup_irods.py < /opt/irods/setup_responses
