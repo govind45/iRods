@@ -7,7 +7,7 @@ echo "{{ account_user }}" > $RESPFILE           # service account user ID
 echo "{{ account_group }}" >> $RESPFILE         # service account group ID
 echo "1" >> $RESPFILE				# server role (iCat ~ provider)
 echo "1" >> $RESPFILE				# ODBC driver for postgres (PostgreSQL ANSI)
-echo "localhost" >> $RESPFILE			# hostname
+echo "{{ ssh_host }}" >> $RESPFILE		# hostname
 echo "{{ dbport }}" >> $RESPFILE		# Database server's port
 echo "{{ dbname }}" >> $RESPFILE		# Database name
 echo "{{ dbuser }}" >> $RESPFILE                # database admin username

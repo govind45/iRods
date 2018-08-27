@@ -1,2 +1,2 @@
 [servers]
-localhost
+master	ansible_ssh_host=18.219.212.87 ansible_ssh_user=ubuntu
