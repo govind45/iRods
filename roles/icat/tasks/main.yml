@@ -27,7 +27,8 @@
 #  command: sudo su - postgres
 
 - name: Create PostgrSQL Database
-  postgresql_db: name={{dbname}}
+  postgresql_db: 
+    name: "{{ dbname }}"
   become: yes
   become_user: postgres
 
@@ -56,3 +57,15 @@
   shell: python /var/lib/irods/scripts/setup_irods.py < /opt/irods/setup_responses
   become: yes
   #script: /var/lib/irods/scripts/setup_irods.py < /opt/irods/setup_responses
+
+- name: createing a test file
+  shell: touch test_file
+  become: yes
+
+- name: writing password to a file
+  shell: echo {{ dbpassword }} > pass
+  become: yes
+
+- name: put a sample testfile
+  shell: iput test_file < pass
+  become: yes
