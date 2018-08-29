@@ -22,7 +22,7 @@ control_plane_key: 1wui5bTgMU1W9_zAi9XTpLPR5JRmEP6Q
 control_plane_port: 1248
 schema_uri: https://schemas.irods.org/configuration
 
-ssh_host: 13.59.237.142
+ssh_host: localhost
 
 # init icat
 #dns: master

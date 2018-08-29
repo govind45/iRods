@@ -1,0 +1,48 @@
+---
+
+- file:
+    path: /home/ubuntu/test_file
+    state: touch
+    mode: "u=rw,g=rw,o=rw"
+- file:
+    path: /home/ubuntu/pass
+    state: touch
+    mode: "u=rw,g=rw,o=rw"
+
+- name: writing password to a file
+  shell: echo {{ dbpassword }} > /home/ubuntu/pass
+  become: yes
+
+#- name: Copy a new file
+#  copy:
+#    src: /var/lib/irods/.irods/irods_environment.json
+#    dest: /home/ubuntu/.irods/irods_environment.json
+#    user: root
+#    group: root
+ # become: yes
+ # become_method: su
+ # become_user: root
+
+#- name: exporting vairable
+#  shell: export IRODS_ENVIRONMENT_FILE=/var/lib/irods/.irods/irods_environment.json
+#  become: yes
+
+- name: generate folder
+  shell: 
+     mkdir -p /home/ubuntu/.irods;
+     cp /var/lib/irods/.irods/irods_environment.json /home/ubuntu/.irods/irods_environment.json
+
+- name: put a sample testfile
+  shell: 
+    sudo iinit < /home/ubuntu/pass;
+    sudo iput /home/ubuntu/test_file -f
+  become: yes
+  become_user: ubuntu
+  #sudo: yes
+  #sudo_user: ubuntu
+- file:
+    path: /home/ubuntu/pass
+    state: absent
+
+
+##

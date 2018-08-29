@@ -58,14 +58,35 @@
   become: yes
   #script: /var/lib/irods/scripts/setup_irods.py < /opt/irods/setup_responses
 
-- name: createing a test file
-  shell: touch test_file
-  become: yes
+# creating a testfile to put it into iRods
+- file:
+    path: /home/ubuntu/test_file
+    state: touch
+    mode: "u=rw,g=rw,o=rw"
+# creating a temp file to store password
+- file:
+    path: /home/ubuntu/pass
+    state: touch
+    mode: "u=rw,g=rw,o=rw"
 
 - name: writing password to a file
-  shell: echo {{ dbpassword }} > pass
+  shell: echo {{ dbpassword }} > /home/ubuntu/pass
   become: yes
 
+- name: generate folder
+  shell:
+     mkdir -p /home/ubuntu/.irods;
+     cp /var/lib/irods/.irods/irods_environment.json /home/ubuntu/.irods/irods_environment.json
+
 - name: put a sample testfile
-  shell: iput test_file < pass
+  shell:
+    sudo iinit < /home/ubuntu/pass;
+    sudo iput /home/ubuntu/test_file -f
   become: yes
+  become_user: ubuntu
+
+# removing the temp file which has password
+- file:
+    path: /home/ubuntu/pass
+    state: absent
+

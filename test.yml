@@ -1,0 +1,8 @@
+# Install PostgreSQL
+- hosts: servers
+  sudo: yes
+  vars:
+    cloud: true
+  roles:
+   - role: fileops
+
